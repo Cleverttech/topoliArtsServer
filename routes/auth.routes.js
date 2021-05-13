@@ -107,14 +107,11 @@ router
           res.status(500).json({
             error: "Email format not correct",
           });
-          return;
         });
-      return;
-    });
+   
   })
   //throw an error if the user does not exists
   .catch((err) => {
-    console.log(err);
     res.status(500).json({
       error: "Email does not exist",
       message: err,
