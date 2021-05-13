@@ -4,9 +4,30 @@ const { Schema, model } = require("mongoose");
 const userSchema = new Schema({
   username: {
     type: String,
-    // unique: true -> Ideally, should be unique, but its up to you
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
   },
   password: String,
+  image: {
+    type: String,
+    default: 'https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg'
+  },
+  role: {
+    type: String,
+    default: 'student',
+  },
+  courses: {
+    type: Schema.Types.ObjectId,
+    ref: 'Courses',
+  },
+  portfolio: {
+    type: Schema.Types.ObjectId,
+    ref: 'Portfolio',
+  },
 });
 
 const User = model("User", userSchema);
