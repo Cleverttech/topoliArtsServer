@@ -11,7 +11,10 @@ const messagesSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref:'Conversation',
   },
-  timestamp: true,
+  timestamp: {
+    type: Date,
+    required: true,
+  },
 });
 
 const Messages = model("Messages", messagesSchema);
