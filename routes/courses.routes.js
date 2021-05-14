@@ -3,6 +3,20 @@ const router = express.Router()
 
 const CoursesModel = require('../models/Courses.model')
 
+
+const isLoggedIn = (req, res, next) => {  
+  if (req.session.loggedInUser) {
+      //calls whatever is to be executed after the isLoggedIn function is over
+      next()
+  }
+  else {
+      res.status(401).json({
+          message: 'Unauthorized user',
+          code: 401,
+      })
+  };
+  };
+
 router.get("/courses", (req, res, next) => {
   CoursesModel.find()
   .populate('mentor')
@@ -16,7 +30,9 @@ router.get("/courses", (req, res, next) => {
   });
 });
 
-router.post('/courses/create', (req,res)=>{
+
+
+router.post('/courses/create', isLoggedIn, (req,res) => {
   const {mentor, name, description, image, price} = req.body
 
   CoursesModel.create({mentor, name, description, image, price})
@@ -31,7 +47,36 @@ router.post('/courses/create', (req,res)=>{
   })  
 })
 
-router.delete('/courses/:courseId', (req, res) => {
+
+//check this before
+router.get('/courses/:courseId', isLoggedIn,(req, res) => {
+  CoursesModel.findById()
+  .then((response) => {
+    res.status(200).json(response)
+  })
+  .catch((err) => {
+    res.status(500).json({
+      error: 'Something went wrong',
+      message: err
+    })
+  })  
+})
+
+//used for payment
+router.post('/courses/:courseId', isLoggedIn,(req, res) => {
+  CoursesModel.findById()
+  .then((response) => {
+    res.status(200).json(response)
+  })
+  .catch((err) => {
+    res.status(500).json({
+      error: 'Something went wrong',
+      message: err
+    })
+  })  
+})
+
+router.delete('/courses/:courseId', isLoggedIn,(req, res) => {
   TodoModel.findByIdAndDelete(req.params.courseId)
   .then((response) => {
     res.status(200).json(response)
