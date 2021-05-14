@@ -97,7 +97,7 @@ router.post('/login', (req, res) => {
               //if passwords do not match
               else {
                   res.status(500).json({
-                      error: 'Passwords don\'t match',
+                      error: 'Invalid Password',
                   })
                 return; 
               }

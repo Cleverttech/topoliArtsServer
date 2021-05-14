@@ -2,12 +2,12 @@ const { Schema, model } = require("mongoose");
 
 // TODO: Please make sure you edit the user model to whatever makes sense in this case
 const coursesSchema = new Schema({
-  metor: {
+  mentor: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
   name: {
-    type:String,
+    type: String,
     required: true,
   },
   description: {
@@ -29,7 +29,10 @@ const coursesSchema = new Schema({
                   type: Schema.Types.Object,
                   ref: 'User',
                 },
-                timestamp: true,
+                timestamp: {
+                  type: Date,
+                  required: true,
+                },
               }),
   }]
 });
