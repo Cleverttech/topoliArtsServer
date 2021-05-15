@@ -19,7 +19,7 @@ const isLoggedIn = (req, res, next) => {
 
 router.get("/courses", (req, res, next) => {
   CoursesModel.find()
-  .populate('mentor')
+  
   .then((courses) => {
     res.status(200).json(courses)
   }).catch((err) => {
@@ -33,9 +33,12 @@ router.get("/courses", (req, res, next) => {
 
 
 router.post('/courses/create', isLoggedIn, (req,res) => {
-  const {mentor, name, description, image, price} = req.body
+  const { name, description, price, image} = req.body
+  const mentor = req.session.loggedInUser._id
+  console.log(mentor)
 
-  CoursesModel.create({mentor, name, description, image, price})
+
+  CoursesModel.create({mentor, name, description, price, image})
   .then((response) => {
     res.status(200).json(response)
   })
