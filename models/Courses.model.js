@@ -29,12 +29,12 @@ const coursesSchema = new Schema({
                   type: Schema.Types.Object,
                   ref: 'User',
                 },
-                timestamp: {
-                  type: Date,
-                  required: true,
-                },
-              }),
-  }]
+              },
+              {timestamp: true},          
+              ),
+              
+            }]
+
 });
 
 const Courses = model("Courses", coursesSchema);

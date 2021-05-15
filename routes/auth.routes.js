@@ -65,22 +65,21 @@ router.post("/register", (req, res) => {
 });
 //------Sign In Route-----//
 
-router
-  .post("/login", (req, res) => {
-    const { email, password } = req.body;
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
 
-    // -----SERVER SIDE VALIDATION ----------
+  // -----SERVER SIDE VALIDATION ----------
 
-    if (!email || !password) {
-      res.status(500).json({
-        error: "Please enter E-mail and password",
-      });
-      return;
-    }
+  if (!email || !password) {
+    res.status(500).json({
+      error: "Please enter E-mail and password",
+    });
+    return;
+  }
 
-    // Find if the user exists in the database
-    UserModel.findOne({ email }).then((userData) => {
-      //check if passwords match
+  // Find if the user exists in the database
+  UserModel.findOne({ email })
+    .then((userData) => {
       bcrypt
         .compare(password, userData.passwordHash)
         .then((doesItMatch) => {
@@ -106,16 +105,17 @@ router
           });
           return;
         });
+    })
+
+    //throw an error if the user does not exists
+    .catch((err) => {
+      res.status(500).json({
+        error: "Email does not exist",
+        message: err,
+      });
+      return;
     });
-  })
-  //throw an error if the user does not exists
-  .catch((err) => {
-    res.status(500).json({
-      error: "Email does not exist",
-      message: err,
-    });
-    return;
-  });
+});
 
 // will handle all POST requests to http:localhost:5005/api/logout
 router.post("/logout", (req, res) => {
