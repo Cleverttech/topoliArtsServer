@@ -33,9 +33,8 @@ router.get("/courses", (req, res, next) => {
 
 
 router.post('/courses/create', isLoggedIn, (req,res) => {
-  const { name, description, price, image} = req.body
+  const {name, description, price, image} = req.body
   const mentor = req.session.loggedInUser._id
-  console.log(mentor)
 
 
   CoursesModel.create({mentor, name, description, price, image})
