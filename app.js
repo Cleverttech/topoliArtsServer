@@ -50,6 +50,9 @@ app.use("/api", coursesRoutes);
 const artistsRoutes = require("./routes/artists.routes");
 app.use("/api", artistsRoutes);
 
+const userRoutes = require("./routes/user.routes");
+app.use("/api", userRoutes);
+
 const cloudinaryRoutes = require("./routes/file-upload.routes");
 app.use("/api", cloudinaryRoutes);
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes

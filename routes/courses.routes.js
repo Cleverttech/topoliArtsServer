@@ -19,7 +19,7 @@ const isLoggedIn = (req, res, next) => {
 
 router.get("/courses", (req, res, next) => {
   CoursesModel.find()
-  
+  .populate('mentor')
   .then((courses) => {
     res.status(200).json(courses)
   }).catch((err) => {

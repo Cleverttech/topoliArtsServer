@@ -119,7 +119,6 @@ router.post('/login', (req, res) => {
       })
       return;  
     });
-
 });
 
 // will handle all POST requests to http:localhost:5005/api/logout
