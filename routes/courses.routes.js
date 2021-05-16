@@ -79,7 +79,7 @@ router.post('/courses/:courseId', isLoggedIn,(req, res) => {
 })
 
 router.delete('/courses/:courseId', isLoggedIn,(req, res) => {
-  TodoModel.findByIdAndDelete(req.params.courseId)
+  CoursesModel.findByIdAndDelete(req.params.courseId)
   .then((response) => {
     res.status(200).json(response)
   })

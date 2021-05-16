@@ -1,5 +1,6 @@
 const express = require('express');
 const router  = express.Router();
+const UserModel = require('../models/User.model')
 
 // include CLOUDINARY:
 const uploader = require('../config/cloudinary.config.js');
@@ -14,5 +15,7 @@ router.post('/upload', uploader.single("imageUrl"), (req, res, next) => {
       image : req.file.path
     })
 })
+
+
 
 module.exports = router;
