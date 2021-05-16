@@ -99,7 +99,6 @@ router.post("/login", (req, res) => {
           }
         })
         .catch((err) => {
-          console.log(err);
           res.status(500).json({
             error: "Email format not correct",
           });
@@ -142,5 +141,18 @@ const isLoggedIn = (req, res, next) => {
 router.get("/user", isLoggedIn, (req, res, next) => {
   res.status(200).json(req.session.loggedInUser);
 });
+
+router.patch('/user', isLoggedIn, (req,res,next)=>{
+  const {image} = req.body.img
+  const {_id} = req.session.loggedInUser
+  
+  UserModel.findByIdAndUpdate(_id, {image:image})
+  .then((result) => {
+    res.status(200).json(result)
+  }).catch((err) => {
+    console.log(err)
+  });
+
+})
 
 module.exports = router;

@@ -14,7 +14,7 @@ const userSchema = new Schema({
   passwordHash: String,
   image: {
     type: String,
-    default: 'https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg'
+    default: 'https://www.searchpng.com/wp-content/uploads/2019/02/Men-Profile-Image.png'
   },
   role: {
     type: String,
