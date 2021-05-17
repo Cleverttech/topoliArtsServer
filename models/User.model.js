@@ -14,15 +14,16 @@ const userSchema = new Schema({
   passwordHash: String,
   image: {
     type: String,
-    default: 'https://www.searchpng.com/wp-content/uploads/2019/02/Men-Profile-Image.png'
+    default:
+      "https://www.searchpng.com/wp-content/uploads/2019/02/Men-Profile-Image.png",
   },
   role: {
     type: String,
-    default: 'student',
+    default: "student",
   },
   portfolio: {
     type: Schema.Types.ObjectId,
-    ref: 'Portfolio',
+    ref: "Portfolio",
   },
 });
 
