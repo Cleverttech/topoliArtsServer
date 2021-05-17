@@ -146,14 +146,28 @@ router.patch('/user', isLoggedIn, (req,res,next)=>{
   const {image} = req.body.img
   const {_id} = req.session.loggedInUser
   
-  UserModel.findByIdAndUpdate(_id, {image:image}, {new:true})
+  UserModel.findByIdAndUpdate(_id, {image}, {new:true})
   .then((result) => {
     req.session.loggedInUser = result
     res.status(200).json(result)
   }).catch((err) => {
     console.log(err)
   });
+})
+
+  router.patch('/user/portfolio', isLoggedIn, (req,res,next)=>{
+    const portfolioId = req.body.portfolio.data._id
+    const {_id} = req.session.loggedInUser
+    
+    UserModel.findByIdAndUpdate(_id, {portfolio: portfolioId}, {new:true})
+    .then((result) => {
+      req.session.loggedInUser = result
+      res.status(200).json(result)
+    }).catch((err) => {
+      console.log(err)
+    });
 
 })
+
 
 module.exports = router;
