@@ -20,10 +20,6 @@ const userSchema = new Schema({
     type: String,
     default: 'student',
   },
-  courses: {
-    type: Schema.Types.ObjectId,
-    ref: 'Courses',
-  },
   portfolio: {
     type: Schema.Types.ObjectId,
     ref: 'Portfolio',

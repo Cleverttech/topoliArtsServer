@@ -6,7 +6,7 @@ const UserModel = require('../models/User.model')
 const uploader = require("../config/cloudinary.config.js");
 
 router.post("/uploadmultiple", uploader.array("imageUrl"), (req, res, next) => {
-  console.log("Here manish", req.files);
+  
 
   if (!req.files) {
     next(new Error("No file uploaded!"));

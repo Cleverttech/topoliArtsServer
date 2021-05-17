@@ -21,6 +21,7 @@ router.post("/portfolio/create", isLoggedIn, (req, res) => {
 
   PortfolioModel.create({ mentor, title, description, cover, images })
     .then((response) => {
+
       res.status(200).json(response);
     })
     .catch((err) => {
