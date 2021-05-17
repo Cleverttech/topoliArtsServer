@@ -5,16 +5,6 @@ const UserModel = require("../models/User.model");
 // include CLOUDINARY:
 const uploader = require("../config/cloudinary.config.js");
 
-const customMiddle = (req, res, next) => {
-  console.log(req.body);
-  console.log(req);
-  // if (req.body == "singleImage") {
-  //   uploader.single("imageUrl");
-  // } else {
-  //   uploader.multiple("imageUrl");
-  // }
-};
-
 router.post("/uploadmultiple", uploader.array("imageUrl"), (req, res, next) => {
   console.log("Here manish", req.files);
 
