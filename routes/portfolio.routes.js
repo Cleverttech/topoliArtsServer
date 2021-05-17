@@ -16,10 +16,10 @@ const isLoggedIn = (req, res, next) => {
 
 // isLoggedIn
 router.post("/portfolio/create", isLoggedIn, (req, res) => {
-  const { title, description, cover, image1 } = req.body;
+  const { title, description, cover, images } = req.body;
   const mentor = req.session.loggedInUser._id;
 
-  PortfolioModel.create({ mentor, title, description, cover, images: image1 })
+  PortfolioModel.create({ mentor, title, description, cover, images })
     .then((response) => {
       res.status(200).json(response);
     })
