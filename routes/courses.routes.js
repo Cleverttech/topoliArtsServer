@@ -18,6 +18,7 @@ const isLoggedIn = (req, res, next) => {
 router.get("/courses", (req, res, next) => {
   CoursesModel.find()
     .populate("mentor")
+    .populate("buyers.userId")
     .then((courses) => {
       res.status(200).json(courses);
     })
