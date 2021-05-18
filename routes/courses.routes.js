@@ -47,23 +47,11 @@ router.post("/courses/create", isLoggedIn, (req, res) => {
     });
 });
 
-//check this before
-router.get("/courses/:courseId", isLoggedIn, (req, res) => {
-  CoursesModel.findById()
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Something went wrong",
-        message: err,
-      });
-    });
-});
 
-//used for payment
-router.post("/courses/:courseId", isLoggedIn, (req, res) => {
-  CoursesModel.findById()
+router.patch("/courses/:courseId", isLoggedIn, (req, res) => {
+  const courseForm = req.body
+  const {id} = req.params.courseId
+  CoursesModel.findById(id)
     .then((response) => {
       res.status(200).json(response);
     })
