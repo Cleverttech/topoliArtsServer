@@ -3,6 +3,8 @@ const router = express.Router()
 
 const UserModel = require('../models/User.model')
 
+
+//Middlewares
 const isLoggedIn = (req, res, next) => {  
   if (req.session.loggedInUser) {
       //calls whatever is to be executed after the isLoggedIn function is over
@@ -29,6 +31,7 @@ const isOwner = (req, res, next) => {
   };
   };
 
+//Routes for Listing all users
 router.get("/users", isLoggedIn, (req, res, next) => {
   
   UserModel.find()
@@ -42,6 +45,7 @@ router.get("/users", isLoggedIn, (req, res, next) => {
   });
 });
 
+//Route for OWNER to change ROLE from student to MENTOR
 router.patch('/users/:userId', isLoggedIn, isOwner, (req, res, next)=>{
   const newRole = req.body
   const {userId} = req.params
