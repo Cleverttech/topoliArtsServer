@@ -6,6 +6,33 @@ const bcrypt = require("bcryptjs");
 
 const UserModel = require("../models/User.model");
 
+//Middlewares
+const isLoggedIn = (req, res, next) => {
+  
+  if (req.session.loggedInUser) {
+    //calls whatever is to be executed after the isLoggedIn function is over
+    next();
+  } else {
+    res.status(401).json({
+      message: "Unauthorized user",
+      code: 401,
+    });
+  }
+};
+
+const isAdmin = (req, res, next) => {
+  
+  if (req.session.loggedInUser.role != 'student') {
+    //calls whatever is to be executed after the isLoggedIn function is over
+    next();
+  } else {
+    res.status(401).json({
+      message: "Unauthorized user",
+      code: 401,
+    });
+  }
+};
+
 //-----Registration Route -----//
 
 router.post("/register", (req, res) => {
@@ -116,32 +143,22 @@ router.post("/login", (req, res) => {
     });
 });
 
+
 // will handle all POST requests to http:localhost:5005/api/logout
-router.post("/logout", (req, res) => {
+router.post("/logout", isLoggedIn, (req, res) => {
   req.session.destroy();
   // Nothing to send back to the user
   res.status(204).json({});
 });
 
-// middleware to check if user is loggedIn
-const isLoggedIn = (req, res, next) => {
-  if (req.session.loggedInUser) {
-    //calls whatever is to be executed after the isLoggedIn function is over
-    next();
-  } else {
-    res.status(401).json({
-      message: "Unauthorized user",
-      code: 401,
-    });
-  }
-};
+// Route to fetch user and store in Session
 
-// THIS IS A PROTECTED ROUTE
-// will handle all get requests to http:localhost:5005/api/user
 router.get("/user", isLoggedIn, (req, res, next) => {
+  
   res.status(200).json(req.session.loggedInUser);
 });
 
+//Route to patch your user's profilePic
 router.patch('/user', isLoggedIn, (req,res,next)=>{
   const {image} = req.body.img
   const {_id} = req.session.loggedInUser
@@ -155,7 +172,8 @@ router.patch('/user', isLoggedIn, (req,res,next)=>{
   });
 })
 
-  router.patch('/user/portfolio', isLoggedIn, (req,res,next)=>{
+//Route to ADD portfolio property to your UserModel.
+  router.patch('/user/portfolio', isLoggedIn, isAdmin, (req,res,next)=>{
     const portfolioId = req.body.portfolio.data._id
     const {_id} = req.session.loggedInUser
     
