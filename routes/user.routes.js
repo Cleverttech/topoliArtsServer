@@ -16,6 +16,19 @@ const isLoggedIn = (req, res, next) => {
   };
   };
 
+const isOwner = (req, res, next) => {  
+  if (req.session.loggedInUser.role === 'owner') {
+      //calls whatever is to be executed after the isLoggedIn function is over
+      next()
+  }
+  else {
+      res.status(401).json({
+          message: 'Unauthorized user',
+          code: 401,
+      })
+  };
+  };
+
 router.get("/users", isLoggedIn, (req, res, next) => {
   
   UserModel.find()
@@ -29,7 +42,7 @@ router.get("/users", isLoggedIn, (req, res, next) => {
   });
 });
 
-router.patch('/users/:userId', isLoggedIn, (req, res, next)=>{
+router.patch('/users/:userId', isLoggedIn, isOwner, (req, res, next)=>{
   const newRole = req.body
   const {userId} = req.params
   
