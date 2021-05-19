@@ -143,6 +143,47 @@ router.post("/login", (req, res) => {
     });
 });
 
+//------Settings patch route ----//
+router.patch('/settings', isLoggedIn, (req, res, next) => {
+  let { username, email, password } = req.body
+ console.log( req.session.loggedInUser)
+  
+  if(username == '') {
+    username = req.session.loggedInUser.username
+  }
+
+  if(email == ''){
+    email = req.session.loggedInUser.email
+  }
+
+  if(password === ''){
+    password = req.session.loggedInUser.passwordHash
+  }
+  else{
+    const passRe = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+    if (!passRe.test(password)) {
+      res.status(500).json({
+        errorMessage:
+          "Password needs to have 8 characters, a number and an Uppercase alphabet",
+      });
+      return;
+    }
+    const salt = bcrypt.genSaltSync(12);
+    const hash = bcrypt.hashSync(password, salt);
+    newpassword = hash
+  }
+
+  UserModel.findByIdAndUpdate(req.session.loggedInUser._id,{ username, email, passwordHash: password},{new: true})
+    .then((result) => {
+      req.session.loggedInUser = result
+    res.status(200).json(result)
+    }).catch((err) => {
+      next(err)
+    });
+
+})
+
+
 
 // will handle all POST requests to http:localhost:5005/api/logout
 router.post("/logout", isLoggedIn, (req, res) => {
@@ -168,7 +209,7 @@ router.patch('/user', isLoggedIn, (req,res,next)=>{
     req.session.loggedInUser = result
     res.status(200).json(result)
   }).catch((err) => {
-    console.log(err)
+    next(err)
   });
 })
 

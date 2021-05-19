@@ -16,7 +16,7 @@ const isLoggedIn = (req, res, next) => {
           code: 401,
       })
   };
-  };
+};
 
 const isOwner = (req, res, next) => {  
   if (req.session.loggedInUser.role === 'owner') {
@@ -32,7 +32,7 @@ const isOwner = (req, res, next) => {
   };
 
 //Routes for Listing all users
-router.get("/users", (req, res, next) => {
+router.get("/users",isLoggedIn, (req, res, next) => {
   
   UserModel.find()
   .then((result) => {
