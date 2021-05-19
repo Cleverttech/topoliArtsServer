@@ -5,8 +5,8 @@ require('./User.model')
 // 1. Define your schema
 let ConversationSchema = new Schema({
   participants: [{
-      ref: 'user',
-      type: Schema.Types.ObjectId
+      type: Schema.Types.ObjectId,
+      ref: 'User'
     },
   ] 
 })

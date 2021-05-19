@@ -5,7 +5,7 @@ require('./Conversation.model')
 // 1. Define your schema
 let MessageSchema = new Schema({
   sender: {
-    ref: 'user',
+    ref: 'User',
     type: Schema.Types.ObjectId
   },
   message: String,

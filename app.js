@@ -18,7 +18,7 @@ const projectName = "topoliArts";
 const capitalized = (string) =>
   string[0].toUpperCase() + string.slice(1).toLowerCase();
 
-app.locals.title = `${capitalized(projectName)} created with Ironlauncher`;
+app.locals.title = `${capitalized(projectName)}`;
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -69,6 +69,7 @@ app.use("/api", cloudinaryRoutes);
 const stripeRoutes = require("./routes/stripe.routes");
 app.use("/api", stripeRoutes);
 
+<<<<<<< HEAD
 //----------------------------------------------------------
 //should be pasted below all routes before error handling
 app.use((req, res, next) => {
@@ -77,6 +78,10 @@ app.use((req, res, next) => {
 });
 //----------------------------------------------------------
 
+=======
+const chatRoutes = require("./routes/chat.routes");
+app.use("/api", chatRoutes);
+>>>>>>> 5cb1c1236c74e404f32225928487eb02e1eec9fd
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
