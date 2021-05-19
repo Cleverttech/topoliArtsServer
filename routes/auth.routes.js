@@ -6,6 +6,33 @@ const bcrypt = require("bcryptjs");
 
 const UserModel = require("../models/User.model");
 
+//Middlewares
+const isLoggedIn = (req, res, next) => {
+  
+  if (req.session.loggedInUser) {
+    //calls whatever is to be executed after the isLoggedIn function is over
+    next();
+  } else {
+    res.status(401).json({
+      message: "Unauthorized user",
+      code: 401,
+    });
+  }
+};
+
+const isAdmin = (req, res, next) => {
+  
+  if (req.session.loggedInUser.role != 'student') {
+    //calls whatever is to be executed after the isLoggedIn function is over
+    next();
+  } else {
+    res.status(401).json({
+      message: "Unauthorized user",
+      code: 401,
+    });
+  }
+};
+
 //-----Registration Route -----//
 
 router.post("/register", (req, res) => {
@@ -116,32 +143,63 @@ router.post("/login", (req, res) => {
     });
 });
 
+//------Settings patch route ----//
+router.patch('/settings', isLoggedIn, (req, res, next) => {
+  let { username, email, password } = req.body
+ console.log( req.session.loggedInUser)
+  
+  if(username == '') {
+    username = req.session.loggedInUser.username
+  }
+
+  if(email == ''){
+    email = req.session.loggedInUser.email
+  }
+
+  if(password === ''){
+    password = req.session.loggedInUser.passwordHash
+  }
+  else{
+    const passRe = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+    if (!passRe.test(password)) {
+      res.status(500).json({
+        errorMessage:
+          "Password needs to have 8 characters, a number and an Uppercase alphabet",
+      });
+      return;
+    }
+    const salt = bcrypt.genSaltSync(12);
+    const hash = bcrypt.hashSync(password, salt);
+    newpassword = hash
+  }
+
+  UserModel.findByIdAndUpdate(req.session.loggedInUser._id,{ username, email, passwordHash: password},{new: true})
+    .then((result) => {
+      req.session.loggedInUser = result
+    res.status(200).json(result)
+    }).catch((err) => {
+      next(err)
+    });
+
+})
+
+
+
 // will handle all POST requests to http:localhost:5005/api/logout
-router.post("/logout", (req, res) => {
+router.post("/logout", isLoggedIn, (req, res) => {
   req.session.destroy();
   // Nothing to send back to the user
   res.status(204).json({});
 });
 
-// middleware to check if user is loggedIn
-const isLoggedIn = (req, res, next) => {
-  if (req.session.loggedInUser) {
-    //calls whatever is to be executed after the isLoggedIn function is over
-    next();
-  } else {
-    res.status(401).json({
-      message: "Unauthorized user",
-      code: 401,
-    });
-  }
-};
+// Route to fetch user and store in Session
 
-// THIS IS A PROTECTED ROUTE
-// will handle all get requests to http:localhost:5005/api/user
 router.get("/user", isLoggedIn, (req, res, next) => {
+  
   res.status(200).json(req.session.loggedInUser);
 });
 
+//Route to patch your user's profilePic
 router.patch('/user', isLoggedIn, (req,res,next)=>{
   const {image} = req.body.img
   const {_id} = req.session.loggedInUser
@@ -151,11 +209,12 @@ router.patch('/user', isLoggedIn, (req,res,next)=>{
     req.session.loggedInUser = result
     res.status(200).json(result)
   }).catch((err) => {
-    console.log(err)
+    next(err)
   });
 })
 
-  router.patch('/user/portfolio', isLoggedIn, (req,res,next)=>{
+//Route to ADD portfolio property to your UserModel.
+  router.patch('/user/portfolio', isLoggedIn, isAdmin, (req,res,next)=>{
     const portfolioId = req.body.portfolio.data._id
     const {_id} = req.session.loggedInUser
     

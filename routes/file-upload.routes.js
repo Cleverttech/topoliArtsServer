@@ -5,23 +5,22 @@ const UserModel = require('../models/User.model')
 // include CLOUDINARY:
 const uploader = require("../config/cloudinary.config.js");
 
+//Posting multiple images on one go
 router.post("/uploadmultiple", uploader.array("imageUrl"), (req, res, next) => {
-  
-
   if (!req.files) {
     next(new Error("No file uploaded!"));
     return;
   }
-
   let paths = req.files.map((el) => {
     return el.path;
   });
-
   res.status(200).json({
     images: paths,
   });
 });
 
+
+//Posting one image at a time
 router.post("/upload", uploader.single("imageUrl"), (req, res, next) => {
   if (!req.file) {
     next(new Error("No file uploaded!"));
