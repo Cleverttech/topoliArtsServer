@@ -25,17 +25,20 @@ const calculateOrderAmount = items => {
 };
 router.post("/create-payment-intent", async (req, res) => {
   const { items, courseId} = req.body
-  const {_id} = req.session.loggedInUser
+  // const {_id} = req.session.loggedInUser
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
     currency: "usd"
   });
-  // CoursesModel.findByIdAndUpdate(_id, {{courseId.buyers.userId: }  )
-
-  res.send({
-    clientSecret: paymentIntent.client_secret
-  });
+  // Courses.findByIdAndUpdate(courseId, {$push:{buyers:{userId: _id} }} )
+  // .then((result) => {
+    res.send({
+      clientSecret: paymentIntent.client_secret
+    });
+  // }).catch((err) => {
+  //   next(err)
+  // });
 });
 
 module.exports = router;
