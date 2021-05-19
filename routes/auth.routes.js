@@ -195,7 +195,7 @@ router.post("/logout", isLoggedIn, (req, res) => {
 // Route to fetch user and store in Session
 
 router.get("/user", isLoggedIn, (req, res, next) => {
-  
+  console.log(req.session.loggedInUser)
   res.status(200).json(req.session.loggedInUser);
 });
 
