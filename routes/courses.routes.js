@@ -90,12 +90,11 @@ router.delete("/courses/:courseId", isLoggedIn, isAdmin, (req, res) => {
     });
 });
 
-module.exports = router;
 
-// router.post('/courses/:courseid/enroll', (req,res)=>{
-//   const {fullname, email, telephone, message} = req.body
+// router.post('/courses/:courseid/payment', (req,res)=>{
+//   const {fullname,countrycode, email, telephone, message} = req.body
 
-//   MessageModel.create({fullname, email, telephone, message})
+//   MessageModel.create({fullname,countrycode, email, telephone, message})
 //   .then((response) => {
 //     res.status(200).json(response)
 //   })
@@ -106,3 +105,5 @@ module.exports = router;
 //     })
 //   })
 // })
+
+module.exports = router;
