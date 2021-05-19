@@ -40,7 +40,7 @@ app.use(
 //----------------------------------------------------------
  //link static files here- should be pasted above the routes
 const path = require('path');
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')))
 //----------------------------------------------------------
 
 // 👇 Start handling routes here
@@ -69,19 +69,18 @@ app.use("/api", cloudinaryRoutes);
 const stripeRoutes = require("./routes/stripe.routes");
 app.use("/api", stripeRoutes);
 
-<<<<<<< HEAD
+const chatRoutes = require("./routes/chat.routes");
+app.use("/api", chatRoutes);
+
 //----------------------------------------------------------
 //should be pasted below all routes before error handling
 app.use((req, res, next) => {
 	// If no routes match, send them the React HTML.
-	res.sendFile(__dirname + "/public/index.html");
-});
+	res.sendFile(__dirname + "/public/index.html")
+})
 //----------------------------------------------------------
 
-=======
-const chatRoutes = require("./routes/chat.routes");
-app.use("/api", chatRoutes);
->>>>>>> 5cb1c1236c74e404f32225928487eb02e1eec9fd
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
