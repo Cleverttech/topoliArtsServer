@@ -31,7 +31,7 @@ router.post("/create-payment-intent", async (req, res) => {
     amount: calculateOrderAmount(items),
     currency: "usd"
   });
-  CoursesModel.findByIdAndUpdate(_id,   )
+  // CoursesModel.findByIdAndUpdate(_id, {{courseId.buyers.userId: }  )
 
   res.send({
     clientSecret: paymentIntent.client_secret
