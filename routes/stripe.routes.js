@@ -40,7 +40,6 @@ router.post("/create-payment-intent", async (req, res) => {
     });
     
   }).catch((err) => {
-    console.log('ohhhhh, it')
     next(err)
   });
 });
