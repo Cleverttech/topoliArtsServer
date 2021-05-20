@@ -43,6 +43,7 @@ io.on('connection', (socket) => {
       message: message, 
       conversationId: chatId
     }
+    console.log(data)
     // As the conversation happens, keep saving the messages in the DB
     MessageModel.create(newMessage)
       .then(() => {
