@@ -1,4 +1,4 @@
-const Courses = require("../models/Courses.model");
+const CoursesModel = require("../models/Courses.model");
 
 const router = require("express").Router();
 
@@ -24,19 +24,24 @@ const calculateOrderAmount = items => {
   return 1400;
 };
 router.post("/create-payment-intent", async (req, res) => {
-  const { items, courseId} = req.body
-  // const {_id} = req.session.loggedInUser
+  const {items} = req.body
+  const {courseId, userId} = req.body.items
+  
   // Create a PaymentIntent with the order amount and currency
+
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
     currency: "usd"
   });
-
-  // CoursesModel.findByIdAndUpdate(courseId, {$push:{buyers:{userId: _id} }} )
-
-
-  res.send({
-    clientSecret: paymentIntent.client_secret
+  CoursesModel.findByIdAndUpdate(courseId, {$push:{buyers:{userId}}}, {new: true} )
+  .then((result) => {
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
+    
+  }).catch((err) => {
+    console.log('ohhhhh, it')
+    next(err)
   });
 });
 
