@@ -31,6 +31,7 @@ app.use(
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
     },
+
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/topoliArts",
       ttl: 24 * 60 * 60,
