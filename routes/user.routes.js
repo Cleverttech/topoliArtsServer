@@ -1,3 +1,4 @@
+
 const express = require('express')
 const router = express.Router()
 
@@ -32,7 +33,7 @@ const isOwner = (req, res, next) => {
   };
 
 //Routes for Listing all users
-router.get("/users",isLoggedIn, (req, res, next) => {
+router.get("/users", (req, res, next) => {
   
   UserModel.find()
   .then((result) => {
