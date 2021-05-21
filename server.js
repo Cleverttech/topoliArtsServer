@@ -23,8 +23,6 @@ const io = new Server(myServer, {
 
 //-------------------SOCKET EVENTS -----------------------------
 
-
-
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('disconnect', () => {
