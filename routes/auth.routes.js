@@ -72,7 +72,7 @@ router.post("/register", (req, res) => {
   UserModel.create({ username, email, passwordHash: hash })
     .then((user) => {
       // ensuring that we don't share the hash as well with the user
-      user.passwordHash = "***";
+
       req.session.loggedInUser = user;
       res.status(200).json(user);
     })
@@ -113,7 +113,6 @@ router.post("/login", (req, res) => {
           //if it matches
           if (doesItMatch) {
             // req.session is the special object that is available to you
-            userData.passwordHash = "***";
             req.session.loggedInUser = userData;
             res.status(200).json(userData);
           }
@@ -146,8 +145,6 @@ router.post("/login", (req, res) => {
 //------Settings patch route ----//
 router.patch('/settings', isLoggedIn, (req, res, next) => {
   let { username, email, password } = req.body
- console.log( req.session.loggedInUser)
-  
   if(username == '') {
     username = req.session.loggedInUser.username
   }
@@ -156,7 +153,7 @@ router.patch('/settings', isLoggedIn, (req, res, next) => {
     email = req.session.loggedInUser.email
   }
 
-  if(password === ''){
+  if(password == ''){
     password = req.session.loggedInUser.passwordHash
   }
   else{
@@ -170,7 +167,7 @@ router.patch('/settings', isLoggedIn, (req, res, next) => {
     }
     const salt = bcrypt.genSaltSync(12);
     const hash = bcrypt.hashSync(password, salt);
-    newpassword = hash
+    password = hash
   }
 
   UserModel.findByIdAndUpdate(req.session.loggedInUser._id,{ username, email, passwordHash: password},{new: true})

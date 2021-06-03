@@ -32,11 +32,17 @@ const isOwner = (req, res, next) => {
   };
 
 //Routes for Listing all users
-router.get("/users",isLoggedIn, (req, res, next) => {
+router.get("/users", (req, res, next) => {
   
   UserModel.find()
   .then((result) => {
-     res.status(200).json(result)
+    let hiddenResult = []
+    result.map((e)=>{
+      e.email = '***'
+      e.passwordHash = '***'
+      hiddenResult.push(e)
+    })
+    res.status(200).json(hiddenResult)
   }).catch((err) => {
     res.status(500).json({
       error: 'No Users found',
